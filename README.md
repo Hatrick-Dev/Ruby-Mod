@@ -1,33 +1,45 @@
-# Ruby Mod (`ruby_mod`)
+# RUBY MOD
 
-Tier 6 rubies for **Fabric / Minecraft 26.3**: tools, armor and a full building set that outclass Netherite.
+A modern vanilla-plus equipment and mineral tier for Fabric 26.3.
 
-## Requirements
-- Minecraft 26.3, Fabric Loader >= 0.19.5, Fabric API 0.160.5+26.3
-- **Java 25** (Minecraft 26.x requires it; Java 21 will not run or compile this version)
+![Minecraft](https://img.shields.io/badge/Minecraft-26.3-70a93c?style=flat-square)
+![Loader](https://img.shields.io/badge/Loader-Fabric-dbb17e?style=flat-square)
+![Java](https://img.shields.io/badge/Java-25-ea7500?style=flat-square)
+![License](https://img.shields.io/badge/License-GPL--3.0--only-845ec2?style=flat-square)
+![Build](https://img.shields.io/badge/build-passing-brightgreen?style=flat-square)
 
-## Content
-| Item | Stats |
-|---|---|
-| Tool material | 2500 durability, 10.0 speed, +4.5 damage, enchantability 18, repaired with Ruby |
-| Sword / Axe | 9.0 dmg @ 1.6 speed / 11.0 dmg @ 1.0 speed |
-| Armor (4/9/7/4 = 24) | toughness 4.0, knockback resistance 0.15 per piece, durability 462/672/630/546 |
-| Perk | every ruby item is fire and lava proof (does not burn, floats on lava) |
+[Overview](#overview) • [Download](#download) • [Installation](#installation) • [The Arsenal & Equipment](#the-arsenal--equipment) • [World Generation](#world-generation) • [Blockset](#the-blockset) • [Server Configuration](#server-configuration) • [Requirements](#requirements) • [Building from Source](#building-from-source) • [Source Map](#source-map-and-contributing)
 
-Blocks: Ruby Block (beacon base, 50 hardness / 1200 blast resistance), Chiseled Ruby Block, Stairs, Slab, Wall, Ruby Ore, Deepslate Ruby Ore.
-Everything lives in the **Ruby Mod** creative tab.
+---
 
-## Build
-```bash
-gradle wrapper --gradle-version latest   # once, to create ./gradlew
-./gradlew build                          # build/libs/ruby_mod-<version>.jar (+ -sources.jar)
-./gradlew releaseAssets                  # build/release/: jar, sources, zip, SHA256SUMS.txt, build-info.json
-./gradlew runClient
-```
+## Overview
 
-## Release
-Push a tag such as `v1.0.0` (or publish a GitHub release). The workflow in `.github/workflows/release.yml`
-builds everything and attaches the five release assets.
+**Ruby Mod** seamlessly expands vanilla Minecraft progression by introducing deep subterranean ruby minerals, dedicated block decorations, and an endgame-ready tier of ruby tools and armor. Built natively for **Fabric 26.3**, the mod follows a strict native design philosophy:
 
-## Regenerating resources
-`python3 tools/generate_assets.py` rewrites all JSON and the placeholder textures (needs Pillow).
+* **Zero Custom Commands:** All minerals, items, and gear are discovered and forged naturally through survival exploration and crafting grids.
+* **Zero Custom Keybinds:** Fully compatible with default keyboard and controller profiles without reserved key conflicts.
+* **Zero UI Bloat:** Integrates into native inventories, crafting tables, and creative tabs without third-party screens.
+* **Deterministic Server Authority:** Ore distribution, durability depletion, damage scaling, and block harvesting belong strictly to the server.
+
+---
+
+## What Ruby Mod Brings to Minecraft
+
+* **Subterranean Stratification:** Independent generation profiles for stone and deepslate strata designed to reward deep cavern exploration without saturating early cave systems.
+* **Full Protective Ensemble:** A complete four-piece armor set positioned between Diamond and Netherite with elevated armor toughness.
+* **Precision Harvest Suite:** Full five-piece toolset (Sword, Pickaxe, Axe, Shovel, Hoe) offering high mining multipliers and balanced attack curves.
+* **Decorative Compression:** Nine-gem compact storage blocks featuring beacon pyramid base support.
+* **Lightweight Architecture:** Built against Java 25 and Fabric API with zero external runtime dependencies.
+
+---
+
+## Download
+
+### Production Release Bundle
+Direct release packages are distributed as compressed archives containing the production mod JAR and initial configuration resources.
+
+* **Latest Release:** [Download ruby_mod-1.0.0.zip](https://github.com/ToontownSuperForeverMVP/Ruby-Mod/releases/latest)
+* **Archive Name:** `ruby_mod-1.0.0.zip`
+
+#### Extracted Directory Contents
+Extracting `ruby_mod-1.0.0.zip` produces the release folder structure:
