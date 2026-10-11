@@ -1,0 +1,5 @@
+{
+  "_comment": "Template only. Ruby Mod 1.0.0 reads no config file yet; copy to config/ruby_mod.json when options are added.",
+  "oreVeinSize": 5,
+  "oreVeinsPerChunk": 3
+}

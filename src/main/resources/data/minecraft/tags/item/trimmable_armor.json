@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "ruby_mod:ruby_helmet",
+    "ruby_mod:ruby_chestplate",
+    "ruby_mod:ruby_leggings",
+    "ruby_mod:ruby_boots"
+  ]
+}

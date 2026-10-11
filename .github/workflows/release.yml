@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build (no leading v)'
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.release.tag_name || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: current   # swap for 'wrapper' once you've committed a Gradle wrapper
+
+      - name: Work out version
+        id: ver
+        run: |
+          TAG="${{ github.event.release.tag_name || github.ref_name }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.version }}" ]; then
+            TAG="${{ github.event.inputs.version }}"
+          fi
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Build jar, sources jar, zip, build-info.json and SHA256SUMS.txt
+        run: gradle build releaseAssets -Pmod_version=${{ steps.ver.outputs.version }} --stacktrace
+
+      - name: Verify checksums
+        working-directory: build/release
+        run: |
+          ls -l
+          sha256sum -c SHA256SUMS.txt
+          cat build-info.json
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruby_mod-${{ steps.ver.outputs.version }}
+          path: build/release/*
+
+      - name: Attach assets to GitHub Release
+        if: github.event_name != 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          generate_release_notes: true
+          files: |
+            build/release/ruby_mod-${{ steps.ver.outputs.version }}.jar
+            build/release/ruby_mod-${{ steps.ver.outputs.version }}-sources.jar
+            build/release/ruby_mod-${{ steps.ver.outputs.version }}.zip
+            build/release/SHA256SUMS.txt
+            build/release/build-info.json

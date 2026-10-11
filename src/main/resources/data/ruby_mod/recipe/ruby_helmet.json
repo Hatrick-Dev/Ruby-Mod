@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "RRR",
+    "R R"
+  ],
+  "key": {
+    "R": "ruby_mod:ruby"
+  },
+  "result": {
+    "id": "ruby_mod:ruby_helmet",
+    "count": 1
+  }
+}

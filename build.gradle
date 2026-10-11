@@ -1,0 +1,132 @@
+import java.security.MessageDigest
+import java.time.Instant
+import groovy.json.JsonOutput
+
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    // Loom adds the Fabric, Mojang and Maven Central repositories automatically.
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // No `mappings` line: 26.x ships with Mojang's names unobfuscated.
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
+    it.options.encoding = 'UTF-8'
+}
+
+java {
+    withSourcesJar()   // -> ruby_mod-<version>-sources.jar
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+    inputs.property 'archivesName', project.base.archivesName
+    from('LICENSE') {
+        rename { "${it}_${inputs.properties.archivesName}" }
+    }
+}
+
+// --------------------------------------------------------------------------- //
+// Release packaging:  ./gradlew releaseAssets   (outputs to build/release/)
+// --------------------------------------------------------------------------- //
+def releaseDir = layout.buildDirectory.dir('release')
+
+def gitSha = {
+    def env = System.getenv('GITHUB_SHA')
+    if (env) return env
+    try {
+        def p = ['git', 'rev-parse', 'HEAD'].execute(null, projectDir)
+        def out = p.text.trim()
+        return p.waitFor() == 0 && out ? out : 'unknown'
+    } catch (Exception ignored) {
+        return 'unknown'
+    }
+}
+
+def sha256 = { File f ->
+    def md = MessageDigest.getInstance('SHA-256')
+    f.withInputStream { s ->
+        byte[] buf = new byte[8192]
+        int n
+        while ((n = s.read(buf)) > 0) md.update(buf, 0, n)
+    }
+    md.digest().collect { String.format('%02x', it) }.join()
+}
+
+tasks.register('copyReleaseJars', Copy) {
+    dependsOn tasks.named('jar'), tasks.named('sourcesJar')
+    from tasks.named('jar').flatMap { it.archiveFile }
+    from tasks.named('sourcesJar').flatMap { it.archiveFile }
+    into releaseDir
+}
+
+tasks.register('releaseZip', Zip) {
+    dependsOn tasks.named('jar')
+    archiveFileName = "${project.base.archivesName.get()}-${project.version}.zip"
+    destinationDirectory = releaseDir
+    from(tasks.named('jar').flatMap { it.archiveFile })          // compiled mod jar
+    from('config-templates') { into 'config' }                    // configuration templates
+    from('README.md')
+    from('CHANGELOG.md')
+}
+
+tasks.register('buildInfo') {
+    def out = releaseDir.map { it.file('build-info.json') }
+    outputs.file(out)
+    outputs.upToDateWhen { false }
+    doLast {
+        def file = out.get().asFile
+        file.parentFile.mkdirs()
+        file.text = JsonOutput.prettyPrint(JsonOutput.toJson([
+                mod_id           : project.archives_base_name,
+                mod_version      : project.version.toString(),
+                commit_sha       : gitSha(),
+                minecraft_version: project.minecraft_version,
+                build_date       : Instant.now().toString(),
+                java_version     : System.getProperty('java.version')
+        ])) + '\n'
+    }
+}
+
+tasks.register('checksums') {
+    dependsOn 'copyReleaseJars', 'releaseZip', 'buildInfo'
+    outputs.upToDateWhen { false }
+    doLast {
+        def dir = releaseDir.get().asFile
+        def lines = dir.listFiles()
+                .findAll { it.isFile() && it.name != 'SHA256SUMS.txt' }
+                .sort { it.name }
+                .collect { "${sha256(it)}  ${it.name}" }
+        new File(dir, 'SHA256SUMS.txt').text = lines.join('\n') + '\n'
+    }
+}
+
+tasks.register('releaseAssets') {
+    group = 'distribution'
+    description = 'Builds jar, sources jar, release zip, build-info.json and SHA256SUMS.txt in build/release/'
+    dependsOn 'checksums'
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "ruby_mod:block/chiseled_ruby_block"
+    }
+  }
+}

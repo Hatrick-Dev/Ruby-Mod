@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "RRR"
+  ],
+  "key": {
+    "R": "ruby_mod:ruby_block"
+  },
+  "result": {
+    "id": "ruby_mod:ruby_slab",
+    "count": 6
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "ruby_mod:ruby_block",
+  "result": {
+    "id": "ruby_mod:chiseled_ruby_block",
+    "count": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "ruby_mod",
+  "version": "${version}",
+  "name": "Ruby Mod",
+  "description": "Tier 6 rubies: gear stronger than Netherite, a full building set and ore generation.",
+  "authors": ["Your Name"],
+  "contact": {
+    "homepage": "https://github.com/your-name/ruby_mod",
+    "sources": "https://github.com/your-name/ruby_mod"
+  },
+  "license": "MIT",
+  "icon": "assets/ruby_mod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.example.rubymod.RubyMod"]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}

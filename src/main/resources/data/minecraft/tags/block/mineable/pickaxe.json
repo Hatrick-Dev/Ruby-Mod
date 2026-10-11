@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "ruby_mod:ruby_block",
+    "ruby_mod:chiseled_ruby_block",
+    "ruby_mod:ruby_ore",
+    "ruby_mod:deepslate_ruby_ore",
+    "ruby_mod:ruby_stairs",
+    "ruby_mod:ruby_slab",
+    "ruby_mod:ruby_wall"
+  ]
+}
