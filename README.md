@@ -60,5 +60,15 @@ Direct release packages are distributed as compressed archives containing the pr
 * **Latest Release:** [Download ruby_mod-1.0.0.zip](https://github.com/MrBoss1017/Ruby-Mod/releases/latest)
 * **Archive Name:** `ruby_mod-1.0.0.zip`
 
-### Extracted Directory Contents
-Extracting `ruby_mod-1.0.0.zip` yields the following production structure:
+---
+
+## License and credits
+Copyright © 2026 MrBoss1017
+
+Original Ruby Mod code, generated assets, and project documentation are licensed under GNU GPL version 3 only (GPL-3.0-only). See LICENSE for full terms and NOTICE for scope/provenance. Modified covered distributions must meet GPLv3's source and licensing requirements.
+
+Gradle wrapper components and pre-existing template material retain their own notices. Minecraft, Fabric, Mod Menu, Python dependencies, and GitHub Actions are external projects and are not relicensed here. The former template CC0 text is preserved in licenses/CC0-1.0.txt.
+
+Ruby Mod is independent and is not an official Minecraft product or approved by Mojang or Microsoft.
+
+
