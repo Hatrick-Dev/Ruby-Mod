@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banner.png" alt="Ruby Mod: The Red Stratum" width="100%">
+  <img width="3584" height="1184" alt="banner" src="https://github.com/user-attachments/assets/4c6d4f89-eab0-476c-9736-4b7e6d3d9fe3" />
 </p>
 
 <p align="center">
