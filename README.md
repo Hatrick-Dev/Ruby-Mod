@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <strong>The Earth is the weapon.</strong><br>
-  A subterranean mineral tier. A forged arsenal. A world that yields to the pickaxe.
+  <strong>RUBY MOD</strong><br>
+  A modern vanilla-plus equipment and mineral tier for Fabric 26.3.
 </p>
 
 <p align="center">
